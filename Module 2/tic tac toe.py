@@ -43,7 +43,7 @@ def get_player_choice():
 
 
 def valid_move(move, board_x, board_o):
-    if (board_x & move) == 0 and (board_o & move) == 0:  # Check if positions is free in each boards
+    if (board_x & move) == 0 and (board_o & move) == 0:  # Check if positions are free in each boards
         return True
     else:
         return False
