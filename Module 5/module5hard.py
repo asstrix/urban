@@ -1,4 +1,5 @@
 from time import sleep
+import re
 
 
 class User:
@@ -11,7 +12,7 @@ class User:
 
 class Video:
 
-    def __init__(self, title='', duration=0, time_now=0, adult_mode=False):
+    def __init__(self, title, duration, time_now=0, adult_mode=False):
         self.title = title
         self.duration = duration
         self.time_now = time_now
@@ -45,7 +46,7 @@ class UrTube:
 
     def add(self, *videos):
         for video in videos:
-            self.videos[video.title] = [video.duration, video.time_now, video.adult_mode]
+            self.videos[re.sub(r'\s+',' ', video.title).strip()] = [video.duration, video.time_now, video.adult_mode]
 
     def get_videos(self, search):
         return [i for i in self.videos if search.lower() in i.lower()]
@@ -53,7 +54,7 @@ class UrTube:
     def watch_video(self, video):
         duration = 0
         if self.current_user is not None:
-            if video.lstrip(' ') in self.get_videos(video):
+            if re.sub(r'\s+',' ', video).strip() in self.get_videos(video):
                 if self.videos[video][2] is True and self.users[self.current_user][1] > 18:
                     for i in range(self.videos[video][0]):
                         duration += 1
