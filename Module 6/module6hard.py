@@ -89,34 +89,6 @@ class Cube(Figure):
 	def get_volume(self):
 		return self.get_sides()[0] ** 3
 
-
-# cr1 = Circle((100, 100, 100), 12)
-# print(cr1.get_sides())
-# cr1.set_sides(12, 12)
-# print(cr1.get_sides())
-# print(cr1.get_color())
-# cr1.set_color((300, 200, 200))
-# print(cr1.get_color())
-# print(len(cr1))
-
-# tr1 = Triangle((100, 100, 100), 12, 13, 15)
-# print(tr1.get_sides())
-# tr1.set_sides(12, 13, 114)
-# print(tr1.get_sides())
-# print(tr1.get_color())
-# tr1.set_color((350, 150, 150))
-# print(tr1.get_color())
-# print(len(tr1))
-
-# cb1 = Cube((100, 100, 100), 10)
-# print(cb1.get_sides())
-# cb1.set_sides(12)
-# print(cb1.get_sides())
-# print(cb1.get_color())
-# cb1.set_color((387, 90, 99))
-# print(cb1.get_color())
-# print(len(cb1))
-
 # Код для проверки:
 circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
 cube1 = Cube((222, 35, 130), 6)
