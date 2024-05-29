@@ -17,9 +17,18 @@ And ached in sleepless silence, long;
 And now 'tis doomed to know the worst,
 And break at once - or yield to song."""
 
-with open("text.txt", mode='w') as file:
-	file.write(text)
+file = open("text.txt", mode='w')
+file.write(text)
+file.close()
 
-with open("text.txt", mode='r') as file:
-	text = file.read()
-	print(text)
+file = open("text.txt", mode='r')
+file_content = file.read()
+file.close()
+print(file_content)
+
+# with open("text.txt", mode='w') as file:
+# 	file.write(text)
+#
+# with open("text.txt", mode='r') as file:
+# 	text = file.read()
+# 	print(text)
