@@ -1,7 +1,7 @@
 def add_everything_up(a, b):
 	try:
 		return round(a + b, 3)
-	except Exception :
+	except Exception:
 		return str(a)+str(b)
 
 
