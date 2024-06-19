@@ -1,7 +1,7 @@
 from multiprocessing import Process, Lock
 
 
-class WarehouseManager():
+class WarehouseManager:
 	def __init__(self):
 		self.data = {}
 		self.lock = Lock()
