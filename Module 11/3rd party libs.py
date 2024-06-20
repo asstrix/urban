@@ -1,4 +1,4 @@
-"""The code to get a quotes of EURUSD symbol and to show as charts"""
+"""The code to get quotes of EURUSD symbol and to show as charts"""
 
 import requests
 import pandas as pd
