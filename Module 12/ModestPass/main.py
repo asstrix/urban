@@ -32,7 +32,7 @@ class App:
         self.scale_val.place(x=100, y=70)
         self.update_scale(16)
 
-        # Capital letters, Numbers, Special symbols
+        # Letters, Numbers, Special symbols
         self.check_cap = tb.IntVar(value=1)
         self.cap = tb.Checkbutton(self.root, style="Roundtoggle.Toolbutton", variable=self.check_cap)
         self.cap.place(x=20, y=130)
