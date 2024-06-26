@@ -20,7 +20,7 @@ class App:
         tb.Label(self.root, text=f'{"Create unique password": ^46}', font=("Helvetica", 8)).place(x=20, y=35)
 
         # Labels of toggle buttons
-        tb.Label(self.root, text=f' Capital letters{"ABC": >12}', font=("Helvetica", 12)).place(x=45, y=126)
+        tb.Label(self.root, text=f' Letters{"ABC": >24}', font=("Helvetica", 12)).place(x=45, y=126)
         tb.Label(self.root, text=f' Numbers{"123": >22}', font=("Helvetica", 12)).place(x=45, y=156)
         tb.Label(self.root, text=f' Special symbols{"!&*": >11}', font=("Helvetica", 12)).place(x=45, y=186)
 
@@ -33,9 +33,9 @@ class App:
         self.update_scale(16)
 
         # Letters, Numbers, Special symbols
-        self.check_cap = tb.IntVar(value=1)
-        self.cap = tb.Checkbutton(self.root, style="Roundtoggle.Toolbutton", variable=self.check_cap)
-        self.cap.place(x=20, y=130)
+        self.check_let = tb.IntVar(value=1)
+        self.let = tb.Checkbutton(self.root, style="Roundtoggle.Toolbutton", variable=self.check_let)
+        self.let.place(x=20, y=130)
         self.check_num = tb.IntVar(value=1)
         self.num = tb.Checkbutton(self.root, style="Roundtoggle.Toolbutton", variable=self.check_num)
         self.num.place(x=20, y=160)
@@ -56,7 +56,7 @@ class App:
             x=320, y=180)
 
         # Regenerate button
-        tb.Button(self.root, text='Regenerate', command=lambda: self.generate_pwd(self.check_cap.get(),
+        tb.Button(self.root, text='Regenerate', command=lambda: self.generate_pwd(self.check_let.get(),
                                                                                   self.check_num.get(),
                                                                                   self.check_spec.get(),
                                                                                   self.scale.get())).place(x=340, y=220)
