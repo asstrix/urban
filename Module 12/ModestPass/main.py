@@ -1,3 +1,8 @@
+"""information is taken from:
+https://docs.python.org/3/library/tkinter.html
+https://ttkbootstrap.readthedocs.io/en/latest/
+https://stackoverflow.com/"""
+
 import ttkbootstrap as tb, secrets, string
 
 
