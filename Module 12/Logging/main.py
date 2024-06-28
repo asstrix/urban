@@ -18,13 +18,13 @@ class Logger:
             self.logger.error(message)
 
 
-if not os.path.exists('../RequestsLogger/logs'):
-    os.makedirs('../RequestsLogger/logs')
+if not os.path.exists('logs'):
+    os.makedirs('logs')
 
 # Create objects for each type of logging
-success = Logger('success', logging.INFO, '../RequestsLogger/logs/success_responses.log')
-bad = Logger('bad', logging.DEBUG, '../RequestsLogger/logs/bad_responses.log')
-blocked = Logger('blocked', logging.ERROR, '../RequestsLogger/logs/blocked_responses.log')
+success = Logger('success', logging.INFO, 'logs/success_responses.log')
+bad = Logger('bad', logging.DEBUG, 'logs/bad_responses.log')
+blocked = Logger('blocked', logging.ERROR, 'logs/blocked_responses.log')
 
 sites = ['https://www.youtube.com/', 'https://instagram.com', 'https://wikipedia.org', 'https://yahoo.com',
          'https://yandex.ru', 'https://whatsapp.com', 'https://twitter.com', 'https://amazon.com', 'https://tiktok.com',
@@ -33,7 +33,6 @@ sites = ['https://www.youtube.com/', 'https://instagram.com', 'https://wikipedia
 for site in sites:
     try:
         response = rq.get(site, timeout=3)
-        print(response.status_code)
         if response.status_code == 200:
             success.log('info', f'{site}')
         elif response.status_code == 503:
