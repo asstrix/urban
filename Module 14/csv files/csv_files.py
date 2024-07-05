@@ -17,4 +17,4 @@ def write_holiday_cities(first_letter):
 		f_out.write(f"In the end, we will go to: {sorted(list(not_visited))[0]}")
 
 
-write_holiday_cities('A')
+write_holiday_cities('L')
