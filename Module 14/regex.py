@@ -1,11 +1,11 @@
 import re
 
-sample_html = """<img src='https://example.com/image1.jpg'> 
+sample_html = """<img src='https://example.com/image1.jpg'>
 <img src='http://example.com/image2.png'> <img src='https://example.com/image3.gif'>"""
 
 
 def extract_image_links(html_text):
-    res = re.findall(r'["\'](.*?\.(?:jpg|jpeg|png|gif))["\']', html_text)
+    res = re.findall(r'["\'](https?:\/\/.*?\.(?:jpg|jpeg|png|gif))["\']', html_text)
     return res
 
 
