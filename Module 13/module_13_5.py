@@ -29,7 +29,7 @@ def keyboard():
 @dp.message_handler(commands=['start'])
 async def send_welcome(message):
     user_name = message['from']['first_name']
-    await message.answer(f"Hello {user_name}!", reply_markup=keyboard())
+    await message.answer(f"Hello, {user_name}!", reply_markup=keyboard())
 
 
 @dp.message_handler(text='Information')
