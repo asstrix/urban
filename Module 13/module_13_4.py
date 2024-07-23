@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 bot = Bot(token='')
-dp = Dispatcher(bot,storage=MemoryStorage())
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 class UserState(StatesGroup):

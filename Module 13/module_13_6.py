@@ -6,7 +6,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 
 
 bot = Bot(token='')
-dp = Dispatcher(bot,storage=MemoryStorage())
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 class UserState(StatesGroup):
@@ -54,11 +54,7 @@ async def main_menu(message):
 
 @dp.callback_query_handler(text='formulas')
 async def get_formulas(call):
-	formula = '''
-	Male: 10 х weight (kg) + 6,25 x height (cm) – 5 х age (y) + 5;
-	Female: 10 x weight (kg) + 6,25 x height (cm) – 5 x age (y) – 161.
-	'''
-	await call.message.answer(formula)
+	await call.message.answer('Male: 10 х weight (kg) + 6,25 x height (cm) – 5 х age (y) + 5')
 
 
 @dp.callback_query_handler(text='calories')
@@ -86,7 +82,7 @@ async def send_calories(message, state):
 	await state.update_data(weight=int(message.text))
 	await UserState.weight.set()
 	data = await state.get_data()
-	result = 10 * data['weight'] + 6.25 * data['height'] - 5 * data['age']
+	result = 10 * data['weight'] + 6.25 * data['height'] - 5 * data['age'] + 5
 	await message.answer(f'Your calorie allowance: {result}')
 	await state.finish()
 

@@ -1,9 +1,8 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
-api =''
 
-bot = Bot(token=api)
+bot = Bot(token='')
 dp = Dispatcher(bot)
 
 
