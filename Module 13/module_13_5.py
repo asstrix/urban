@@ -3,9 +3,10 @@ from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
-bot = Bot(token='')
+bot = Bot(token='7490221133:AAG4JGi-WGKsb_4x2wXjAjLRdz08OBltTMY')
 dp = Dispatcher(bot,storage=MemoryStorage())
 
 
@@ -16,30 +17,30 @@ class UserState(StatesGroup):
 
 
 def keyboard():
-    kb = InlineKeyboardMarkup(row_width=2)
-    header = [
-        InlineKeyboardButton('Calculate', callback_data='calc'),
-        InlineKeyboardButton('Information', callback_data='info'),
-    ]
-    kb.row(*header)
+    kb = ReplyKeyboardMarkup(keyboard=[
+        [
+            KeyboardButton(text='Calculate'),
+            KeyboardButton(text='Information'),
+        ]
+    ], resize_keyboard=True
+    )
     return kb
 
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message):
     user_name = message['from']['first_name']
-    await message.answer(f"Hello {user_name} i\'m the bot helping your health", reply_markup=keyboard())
+    await message.answer(f"Hello {user_name}!", reply_markup=keyboard())
 
 
-@dp.callback_query_handler(text='info')
-async def send_welcome(call):
-    welcome_text = 'I\'m the bot helping your health'
-    await call.message.answer(welcome_text)
+@dp.message_handler(text='Information')
+async def info(message):
+    await message.answer('I\'m the bot helping your health')
 
 
-@dp.callback_query_handler(text='calc')
-async def set_age(call):
-    await call.message.answer('Enter your age:')
+@dp.message_handler(text='Calculate')
+async def set_age(message):
+    await message.answer('Enter your age:')
     await UserState.age.set()
 
 
