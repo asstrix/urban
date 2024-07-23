@@ -6,7 +6,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
 bot = Bot(token='')
-dp = Dispatcher(bot,storage=MemoryStorage())
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 class UserState(StatesGroup):
