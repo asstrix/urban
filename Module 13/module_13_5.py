@@ -62,10 +62,14 @@ async def send_calories(message, state):
     await state.update_data(weight=int(message.text))
     await UserState.weight.set()
     data = await state.get_data()
-    result = 10 * data['weight'] + 6.25 * data['height'] - 5 * data['age']
-    await message.answer(result)
+    result = 10 * data['weight'] + 6.25 * data['height'] - 5 * data['age'] + 5
+    await message.answer(f'Your calorie allowance: {result}')
     await state.finish()
 
+
+@dp.message_handler()
+async def any_message(message):
+    await message.answer('Enter the /start command to start chatting.')
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
