@@ -4,22 +4,22 @@ app = FastAPI()
 
 
 @app.get('/')
-async def root() -> str:
+async def root_page() -> str:
 	return 'Main Page'
 
 
 @app.get("/user/admin")
-async  def admin() -> str:
+async def login_admin() -> str:
 	return "Logged in as administrator"
 
 
 @app.get("/user")
-async def user(username: str, age: int) -> str:
+async def get_user_info(username: str, age: int) -> str:
 	return f'User\'s information. Name: <{username}>, Age: <{age}>'
 
 
 @app.get("/user/{user_id}")
-async def user(user_id: int) -> str:
+async def get_user_id(user_id: int) -> str:
 	return f'You logged in as user № <{user_id}>'
 
 
