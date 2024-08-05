@@ -7,9 +7,9 @@ users = []
 
 
 class User(BaseModel):
-    id: int = None
-    username: str
-    age: int = None
+    id: int = Path(ge=1, le=100)
+    username: str = Path(min_length=5, max_length=20, description='Enter username')
+    age: int = Path(ge=18, le=120, description='Enter age')
 
 
 @app.get('/users')
