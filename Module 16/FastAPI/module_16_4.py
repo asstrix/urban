@@ -40,5 +40,8 @@ def update_user(user: User) -> str:
 
 @app.delete('/user/{user_id}')
 async def delete_user(user_id: int = Path(ge=1, le=100)):
-    users.pop(user_id - 1)
-    return f'The user <{user_id}> has been deleted'
+    try:
+        users.pop(user_id - 1)
+        return f'The user <{user_id}> has been deleted'
+    except IndexError:
+        raise HTTPException(status_code=404, detail="User was not found")
