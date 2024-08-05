@@ -8,8 +8,8 @@ users = []
 
 class User(BaseModel):
     id: int = Path(ge=1, le=100)
-    username: str = Path(min_length=5, max_length=20, description='Enter username')
-    age: int = Path(ge=18, le=120, description='Enter age')
+    username: str = Path(min_length=5, max_length=20)
+    age: int = Path(ge=18, le=120)
 
 
 @app.get('/users')
@@ -31,7 +31,7 @@ async def add_user(user: User):
 def update_user(user: User) -> str:
     try:
         users[user.id] = user
-        return f'The user <{user.id}> has been updated'
+        return f'The user <{user.id}> has been updated.'
     except IndexError:
         raise HTTPException(status_code=404, detail="Message not found")
 
@@ -40,6 +40,6 @@ def update_user(user: User) -> str:
 async def delete_user(user_id: int = Path(ge=1, le=100)):
     try:
         users.pop(user_id)
-        return f'The user <{user_id}> has been deleted'
+        return f'The user <{user_id}> has been deleted.'
     except IndexError:
         raise HTTPException(status_code=404, detail="User was not found")
