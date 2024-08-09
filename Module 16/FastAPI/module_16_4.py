@@ -19,14 +19,10 @@ async def get_users() -> List[User]:
 
 @app.post('/user/{username}/{age}')
 async def add_user(username: str = Path(min_length=5, max_length=20), age: int = Path(ge=18, le=120)):
-    User.username = username
-    User.age = age
-    if not len(users):
-        User.id = 1
-    else:
-        User.id = len(users) + 1
-    users.append(User)
-    return f'User <{User.id}> has been registered'
+    user_id = len(users) + 1
+    new_user = User(id=user_id, username=username, age=age)
+    users.append(new_user)
+    return f'User <{new_user.id}> has been registered'
 
 
 @app.put('/user/{user_id}/{username}/{age}')
