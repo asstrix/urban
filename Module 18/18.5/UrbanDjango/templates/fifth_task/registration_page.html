@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register: F&F rent a car</title>
+</head>
+<body>
+    <h4>Registration form</h4>
+    <form method='post'>
+        {% csrf_token %}
+        <label for='username'>Login</label>
+        <input type='text' id='username' maxlength='30' required><br>
+        <label for='password'>Password</label>
+        <input type='text' id='password' minlength=8 required><br>
+        <label for='repeat_password'>Repeat password</label>
+        <input type='text' id='repeat_password' minlength=8 required><br>
+        <label for='age'>Age</label>
+        <input type='text' id='age' maxlength=3 required><br>
+        <button type="submit">Send final form</button>
+    </form>
+</body>
+</html>
