@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-    <h1>Orders</h1>
-    {% include 'fourth_task/menu.html' %}
-    <h1>Unfortunately, you have no orders</h1>
-</body>
-</html>
+{% extends "fourth_task/menu.html" %}
+{% block title %} {{ block.super }} {% endblock %}
+{% block pagename %} {{ block.super }} {% endblock %}
+{% block menu %} {{ block.super }} {% endblock %}
+{% block content %}
+    <h2>Unfortunately, you have no orders</h2>
+{% endblock %}
