@@ -21,6 +21,11 @@ def order_page(request):
 def catalog_page(request):
 	title = 'Catalog: F&F rent a car'
 	context = {
-		'title': title
+		'title': title,
+		'first': 'Hyundai i30',
+		'second': 'Kia Stonic',
+		'third': 'Ford Focus',
+		'fourth': 'Skoda Scala',
+		'fifth': 'Ford Focus C-Max',
 	}
 	return render(request, 'third_task/catalog.html', context)
