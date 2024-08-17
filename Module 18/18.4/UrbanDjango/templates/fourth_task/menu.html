@@ -5,6 +5,25 @@
     <title>Title</title>
 </head>
 <body>
+    <pagename>
+        {% block pagename %}
+
+        {% endblock %}
+    </pagename>
+    <menu>
+        {% block menu %}
+        <ul>
+            <li><a href='/'>Main</a><br></li>
+            <li><a href='/catalog/'>Rent a car</a></li>
+            <li><a href='/order/'>Orders</a></li>
+        </ul>
+        {% endblock %}
+    </menu>
+    <content>
+        {% block content %}
+
+        {% endblock %}
+    </content>
 
 </body>
 </html>

@@ -6,9 +6,9 @@
 </head>
 <body>
     <h1> Our cars</h1>
+    {% include 'fourth_task/menu.html' %}
     {% for i in cars %}
         <h3>{{ i }}  <button>rent</button></h3>
     {% endfor %}
-    <a href='/'>Back to Main</a>
 </body>
 </html>
