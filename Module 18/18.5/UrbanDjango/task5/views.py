@@ -13,18 +13,15 @@ def sign_up_by_django(request):
             pwd = form.cleaned_data['password']
             rep_pwd = form.cleaned_data['repeat_password']
             age = form.cleaned_data['age']
-            print(username, pwd, rep_pwd, age)
-            if pwd == rep_pwd and int(age) > 18 and username not in users:
-                return HttpResponse(f"Hello, <{username}>!", status=200)
-            elif pwd != rep_pwd:
-                info['error'] = 'Passwords do not match'
-                return HttpResponse('Passwords do not match', status=401)
-            elif int(age) < 18:
-                info['error'] = 'You have to be older 18 years'
-                return HttpResponse('You have to be older 18 years', status=402)
+            print(username, pwd,rep_pwd, age)
+            if pwd == rep_pwd and int(age) >= 18 and username not in users:
+                return HttpResponse(f"Hello, {username}!")
             elif username in users:
                 info['error'] = 'User already exists'
-                return HttpResponse('User already exists', 406)
+            elif pwd != rep_pwd:
+                info['error'] = 'Passwords do not match'
+            elif int(age) < 18:
+                info['error'] = 'You have to be older 18 years'
     else:
         form = UserRegister()
     context = {
@@ -42,16 +39,13 @@ def sign_up_by_html(request):
         pwd = request.POST.get('password')
         rep_pwd = request.POST.get('repeat_password')
         age = request.POST.get('age')
-        if pwd == rep_pwd and int(age) > 18 and username not in users:
-            return HttpResponse(f"Hello, <{username}>!")
-        elif pwd != rep_pwd:
-            info['error'] = 'Passwords do not match'
-            return HttpResponse('Passwords do not match')
-        elif int(age) < 18:
-            info['error'] = 'You have to be older 18 years'
-            return HttpResponse('You have to be older 18 years')
+        if pwd == rep_pwd and int(age) >= 18 and username not in users:
+            return HttpResponse(f"Hello, {username}!")
         elif username in users:
             info['error'] = 'User already exists'
-            return HttpResponse(f'User <{username}> already exists')
+        elif pwd != rep_pwd:
+            info['error'] = 'Passwords do not match'
+        elif int(age) < 18:
+            info['error'] = 'You have to be older than 18 years'
 
     return render(request, 'fifth_task/registration_page.html', {'info': info})
