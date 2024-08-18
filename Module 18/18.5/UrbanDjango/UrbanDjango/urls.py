@@ -27,5 +27,6 @@ urlpatterns = [
     # path('', main_page),
     # path('catalog/', catalog_page),
     # path('order/', order_page),
-    path('sign/', sign_up_by_django)
+    path('sign/', sign_up_by_django),
+    path('sign2/', sign_up_by_html)
 ]
