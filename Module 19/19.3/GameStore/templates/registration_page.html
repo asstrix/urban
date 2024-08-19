@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register: F&F rent a car</title>
+</head>
+<body>
+    {% if form.errors or info.error %}
+        <p style="color: red;">
+            {% if info.error %}
+                {{ info.error }}
+            {% else %}
+                {{ form.non_field_errors|first }}
+            {% endif %}
+        </p>
+    {% else %}
+        <h4>Registration form</h4>
+    {% endif %}
+    <form method='post'>
+        {% csrf_token %}
+        <!-- if uses Django form -->
+        {% if form %}
+            {{ form.as_p }}
+        {% else %}
+        <!-- if uses simple HTML -->
+        <p>
+            <label for='username'>Login</label>
+            <input type='text' id='username' name='username' maxlength='30' required>
+        </p>
+        <p>
+            <label for='password'>Password</label>
+            <input type='password' id='password' name='password' minlength=8 required>
+        </p>
+        <p>
+        <label for='repeat_password'>Repeat password</label>
+            <input type='password' id='repeat_password' name='repeat_password' minlength=8 required>
+        </p>
+        <p>
+        <label for='age'>Age</label>
+            <input type='text' id='age' name='age' maxlength=3 required>
+        {% endif %}
+        <p><button type="submit">Send final form</button></p>
+    </form>
+</body>
+</html>
