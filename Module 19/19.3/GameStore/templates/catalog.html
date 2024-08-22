@@ -4,6 +4,6 @@
 {% block menu %} {{ block.super }} {% endblock %}
 {% block content %}
     {% for i in games %}
-        <h3>{{ i.title }}|{{i.description}}|{{i.cost}}   <button>buy</button></h3>
+        <h3>{{ i.title }}|{{ i.description }}|{{ i.cost }}   <button>buy</button></h3>
     {% endfor %}
 {% endblock %}
