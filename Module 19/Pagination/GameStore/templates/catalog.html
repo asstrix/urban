@@ -1,0 +1,36 @@
+{% extends "menu.html" %}
+{% block title %} {{ block.super }} {% endblock %}
+{% block pagename %} {{ block.super }} {% endblock %}
+{% block menu %} {{ block.super }} {% endblock %}
+{% block content %}
+    <form method="get" id="per-page-form">
+        <label for="per_page">Показывать на странице:</label>
+        <select name="per_page" id="per_page" onchange="this.form.submit()">
+            <option value="3" {% if per_page == 3 %}selected{% endif %}>3</option>
+            <option value="6" {% if per_page == 6 %}selected{% endif %}>6</option>
+            <option value="9" {% if per_page == 9 %}selected{% endif %}>9</option>
+            <option value="12" {% if per_page == 12 %}selected{% endif %}>12</option>
+            <option value="15" {% if per_page == 15 %}selected{% endif %}>15</option>
+        </select>
+    </form>
+    {% for i in page_obj %}
+        <h3>{{ i.title }}|{{ i.description }}|{{ i.cost }}  <button>buy</button></h3>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&per_page={{ per_page }}"><<</a>
+                <a href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}"><</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} from {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}">></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}">>></a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
