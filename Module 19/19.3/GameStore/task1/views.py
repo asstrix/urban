@@ -1,43 +1,44 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import UserRegister
+from .models import *
 
 
 # Create your views here.
 def main_page(request):
-    title = 'F&F rent a car'
+    title = 'Have a rest'
     header = 'Main Page'
     context = {
         'title': title,
         'header': header,
     }
-    return render(request, 'fourth_task/main.html', context)
+    return render(request, 'main.html', context)
 
 
 def order_page(request):
-    title = 'Orders: F&F rent a car'
+    title = 'Orders: Have a rest'
     header = 'Orders'
     context = {
         'title': title,
         'header': header,
     }
-    return render(request, 'fourth_task/order.html', context)
+    return render(request, 'order.html', context)
 
 
 def catalog_page(request):
-    title = 'Catalog: F&F rent a car'
-    header = 'Our cars'
-    cars = ['Hyundai i30', 'Kia Stonic', 'Ford Focus', 'Skoda Scala', 'Ford Focus C-Max']
+    title = 'Catalog: Have a rest'
+    header = 'Our games'
+    games = Game.objects.all()
     context = {
         'title': title,
         'header': header,
-        'cars': cars,
+        'games': games,
     }
-    return render(request, 'fourth_task/catalog.html', context)
+    return render(request, 'catalog.html', context)
 
 
 def sign_up_by_django(request):
-    users = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6']
+    users = Buyer.objects.all().values_list('name', flat=True)
     info = {}
     if request.method == 'POST':
         form = UserRegister(request.POST)
@@ -47,6 +48,7 @@ def sign_up_by_django(request):
             rep_pwd = form.cleaned_data['repeat_password']
             age = form.cleaned_data['age']
             if pwd == rep_pwd and int(age) >= 18 and username not in users:
+                Buyer.objects.create(name=username, balance=0, age=age)
                 return HttpResponse(f"Hello, {username}!")
             elif username in users:
                 info['error'] = 'User already exists'
@@ -60,24 +62,4 @@ def sign_up_by_django(request):
         'info': info,
         'form': form,
     }
-    return render(request, 'fifth_task/registration_page.html', context)
-
-
-def sign_up_by_html(request):
-    users = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6']
-    info = {}
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        pwd = request.POST.get('password')
-        rep_pwd = request.POST.get('repeat_password')
-        age = request.POST.get('age')
-        if pwd == rep_pwd and int(age) >= 18 and username not in users:
-            return HttpResponse(f"Hello, {username}!")
-        elif username in users:
-            info['error'] = 'User already exists'
-        elif pwd != rep_pwd:
-            info['error'] = 'Passwords do not match'
-        elif int(age) < 18:
-            info['error'] = 'You have to be older than 18 years'
-
-    return render(request, 'fifth_task/registration_page.html', {'info': info})
+    return render(request, 'registration_page.html', context)

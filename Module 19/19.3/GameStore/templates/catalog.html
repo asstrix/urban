@@ -1,9 +1,9 @@
-{% extends "fourth_task/menu.html" %}
+{% extends "menu.html" %}
 {% block title %} {{ block.super }} {% endblock %}
 {% block pagename %} {{ block.super }} {% endblock %}
 {% block menu %} {{ block.super }} {% endblock %}
 {% block content %}
-    {% for i in cars %}
-        <h3>{{ i }}  <button>rent</button></h3>
+    {% for i in games %}
+        <h3>{{ i.title }}|{{i.description}}|{{i.cost}}   <button>buy</button></h3>
     {% endfor %}
 {% endblock %}
