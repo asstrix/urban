@@ -5,12 +5,12 @@
     right: 20px;
     bottom: 10px;
     }
-/* Центрирование только формы логина */
+
 .login-form-container {
     display: flex;
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center;     /* Центрирование по вертикали */
-    height: calc(100vh - 100px); /* 100vh минус высота хедера */
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
 }
 
 .login-form {
@@ -19,7 +19,7 @@
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     width: 300px;
-    text-align: center; /* Центровка текста внутри формы */
+    text-align: center;
 }
 
 .login-form h1 {
@@ -32,10 +32,12 @@
 
 .login-form form {
     display: flex;
-    flex-direction: column; /* Расположить поля формы вертикально */
+    flex-direction: column;
 }
 
 .login-form button {
+    display: block;
+    margin: 10px auto;
     margin-top: 10px;
     padding: 10px;
     background-color: #4CAF50;
@@ -43,10 +45,11 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 20%;
 }
 
 .login-form button:hover {
-    background-color: #45a049; /* Стили для hover эффекта на кнопке */
+    background-color: #45a049;
 }
 
     border-radius: 5px;
@@ -54,5 +57,5 @@
 }
 
 .login-form button:hover {
-    background-color: #45a049; /* Стили для hover эффекта на кнопке */
+    background-color: #45a049;
 }

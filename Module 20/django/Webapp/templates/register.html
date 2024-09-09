@@ -7,10 +7,15 @@
 </a>
 {% endblock %}
 {% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}  <!-- Отображение формы в виде параграфов -->
-      <button type="submit">Зарегистрироваться</button>
-  </form>
+<div class="signup-form-container">
+    <div class="signup-form">
+        <h2>Create account</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+</div>
 {% endblock %}
