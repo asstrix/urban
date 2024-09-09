@@ -102,14 +102,13 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = []
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Стандартная аутентификация
+    'django.contrib.auth.backends.ModelBackend',
 ]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-# Указываем, что основной атрибут для пользователя — email
 AUTH_USER_MODEL = 'auth.User'
 
 # Internationalization
