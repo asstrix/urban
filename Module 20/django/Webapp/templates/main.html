@@ -1,4 +1,8 @@
-{% extends "menu.html" %}
-{% block title %} {{ block.super }} {% endblock %}
-{% block pagename %} {{ block.super }} {% endblock %}
-{% block menu %} {{ block.super }} {% endblock %}
+{% extends "header.html" %}
+{% block menu %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/login_styles.css' %}">
+<a href="/login/">
+    <img src="{% static 'images/signin.png' %}" alt="Sign in" class="sign-in">
+</a>
+{% endblock %}

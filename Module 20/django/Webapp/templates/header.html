@@ -9,9 +9,11 @@
 <body>
     <div class="header">
         <img src="{% static 'images/QRBoxC.png' %}" alt="QRBox" style="width: 100px; height: 100px; margin: 0;">
-        <a href="/login/">
-            <img src="{% static 'images/signin.png' %}" alt="Sign in" class="sign-in">
-        </a>
+        {% block menu %}
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
+
 </body>
 </html>

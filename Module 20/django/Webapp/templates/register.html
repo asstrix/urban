@@ -1,4 +1,16 @@
-{% extends "menu.html" %}
-{% block title %} {{ block.super }} {% endblock %}
-{% block pagename %} {{ block.super }} {% endblock %}
-{% block menu %} {{ block.super }} {% endblock %}
+{% extends "header.html" %}
+{% block menu %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/reg_styles.css' %}">
+<a href="/">
+    <img src="{% static 'images/main.png' %}" alt="Main" class="back_to_main">
+</a>
+{% endblock %}
+{% block content %}
+  <h2>Регистрация</h2>
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}  <!-- Отображение формы в виде параграфов -->
+      <button type="submit">Зарегистрироваться</button>
+  </form>
+{% endblock %}

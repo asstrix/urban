@@ -1,4 +1,22 @@
-{% extends "menu.html" %}
-{% block title %} {{ block.super }} {% endblock %}
-{% block pagename %} {{ block.super }} {% endblock %}
-{% block menu %} {{ block.super }} {% endblock %}
+{% extends "header.html" %}
+{% block menu %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/login_styles.css' %}">
+<a href="/">
+    <img src="{% static 'images/main.png' %}" alt="Main" class="back_to_main">
+</a>
+{% endblock %}
+{% block content %}
+<div class="login-form-container">
+    <div class="login-form">
+        <h1>Sign in</h1>
+        <h3> to continue to QRBox</h3>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+        <h4> New to QRBox? <a href="/register"> Create account</a></h4>
+    </div>
+</div>
+{% endblock %}
