@@ -13,7 +13,7 @@
         <h3>to continue to QRBox</h3>
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <label for="id_username">Username:</label>
+            <label for="id_username">Email:</label>
             {{ form.username }}
             <label for="id_password">Password:</label>
             {{ form.password }}
