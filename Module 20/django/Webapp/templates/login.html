@@ -1,26 +1,21 @@
-{% extends "header.html" %}
-{% block title %} {{ block.super }} {% endblock %}
-{% block menu %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/login_styles.css' %}">
-<a href="/">
-    <img src="{% static 'images/main.png' %}" alt="Main" class="back_to_main">
-</a>
-{% endblock %}
-{% block content %}
-<div class="login-form-container">
-    <div class="login-form">
-        <h1>Sign in</h1>
-        <h3>to continue to QRBox</h3>
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <label>Email:</label>
-            {{ form.username }}
-            <label >Password:</label>
-            {{ form.password }}
-            <button type="submit">Login</button>
-        </form>
-        <p>New to QRBox? <a href="{% url 'register' %}">Create account</a></p>
-    </div>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Sign in</h1>
+    <h4>to continue to QRBox</h4>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <label>Email:</label><br>
+        {{ form.username }}<br><br>
+        <label>Password:</label><br>
+        {{ form.password }}<br><br>
+        <button type="submit">Login</button>
+    </form>
+    <p>New to QRBox? <a href="{% url 'register' %}">Create account</a>
+</body>
+</html>
+

@@ -1,0 +1,27 @@
+{% extends "header.html" %}
+{% block title %} {{ block.super }} {% endblock %}
+{% block menu %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/reg_styles.css' %}">
+<a href="/">
+    <img src="{% static 'images/main.png' %}" alt="Main" class="back_to_main">
+</a>
+{% endblock %}
+{% block content %}
+<div class="signup-form-container">
+    <div class="signup-form">
+        <h2>Create account</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label>Email:</label>
+            {{ form.email }}
+            <label>Password:</label>
+            {{ form.password1 }}
+            <label>Password confirmation:</label>
+            {{ form.password2 }}
+            <button type="submit">Sign up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+</div>
+{% endblock %}
