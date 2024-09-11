@@ -34,25 +34,39 @@ def reg_page(request):
             return redirect('/')
     else:
         form = SignUpForm()
-    return render(request, 'register.html', {'form': form, 'context': context})
+    context['form'] = form
+    return render(request, 'register.html', context)
 
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'QRBox: Login'
+        return context
+
+
+class QRCodeForm(forms.Form):
+    data = forms.CharField(label='', max_length=255, widget=forms.TextInput(attrs={
+        'placeholder': 'Enter text or URL...',
+        'class': 'form-control'
+    }))
+
 
 def main_page(request):
-    title = 'QRBox'
+    title = 'QRBox: Create QR Code for free'
     context = {
         'title': title,
     }
+    if request.method == 'POST':
+        form = QRCodeForm(request.POST)
+        if form.is_valid():
+            # Handle form's data here
+            data = form.cleaned_data['data']
+            context['data'] = data
+    else:
+        form = QRCodeForm()
+    context['form'] = form
     return render(request, 'main.html', context)
-
-
-def login_page(request):
-    title = 'QRBox: Login'
-    context = {
-        'title': title,
-    }
-    return render(request, 'login.html', context)
 
