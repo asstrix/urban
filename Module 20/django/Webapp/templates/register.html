@@ -12,7 +12,12 @@
         <h2>Create account</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <label>Email:</label>
+            {{ form.email }}
+            <label>Password:</label>
+            {{ form.password1 }}
+            <label>Password confirmation:</label>
+            {{ form.password2 }}
             <button type="submit">Sign up</button>
         </form>
         <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
