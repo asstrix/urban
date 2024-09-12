@@ -5,6 +5,7 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    <a href="{% url 'main' %}">Main</a>
     <h2>Create account</h2>
     <form method="post">
         {% csrf_token %}

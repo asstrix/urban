@@ -6,16 +6,15 @@
 </head>
 <body>
     <h1>Welcome to QRBox</h1>
+    <a href="{% url 'login' %}">Sign in</a><br><br>
     <form method="post" enctype="multipart/form-data" action="{% url 'main' %}">
         {% csrf_token %}
         <label>{{ form.data.label }}</label> {{ form.data }}<br><br>
-        <label>{{ form.size.label }}</label> {{ form.size }}<br><br>
+        <label>{{ form.size.label }}</label> {{ form.size }} 1 = 21x21, 2 = 25x25 and etc...<br><br>
         <label>{{ form.transparent.label }}</label> {{ form.transparent }}<br><br>
-        <label>{{ form.custom_background.label }}</label> {{ form.custom_background }}<br><br>
+        <label>{{ form.background.label }}</label> {{ form.background }}<br><br>
         <label>{{ form.logo.label }}</label> {{ form.logo }}<br><br>
-        <label>{{ form.options.label }}</label> {{ form.options }}<br><br>
         <label>{{ form.color.label }}</label> {{ form.color }}<br><br>
-        <label>{{ form.animated.label }}</label> {{ form.animated }}<br><br>
         <button type="reset">Reset</button>
         <button type="submit">Create</button>
     </form>
@@ -23,7 +22,7 @@
     <!-- Добавляем проверку на наличие QR-кода -->
     {% if qr_code_url %}
         <div class="qr-code">
-            <h2>Your QR Code</h2>
+            <h2>{{ result }}</h2>
             <img src="{{ qr_code_url }}" alt="QR Code" style="max-width: 400px;">
         </div>
     {% endif %}

@@ -33,20 +33,8 @@ class QRCodeForm(forms.Form):
         'placeholder': 'Enter text or URL...',
         'class': 'form-control'})
     )
-    size = forms.IntegerField(label='Size (1-40)', min_value=1, max_value=40)
+    size = forms.IntegerField(label='QR code Size (1-40)', min_value=1, max_value=40)
     transparent = forms.BooleanField(label='Transparent background', required=False)
-    custom_background = forms.ImageField(label='Custom background', required=False)
+    background = forms.ImageField(label='Custom background', required=False)
     logo = forms.ImageField(label='Logo', required=False)
-    options = forms.ChoiceField(
-        choices=[
-            ('square', 'Square (default)'),
-            ('circle', 'Circle'),
-            ('triangle', 'Triangle'),
-            ('star', 'Star'),
-            ('diamond', 'Diamond'),
-            ('waves', 'Waves'),
-        ],
-        label='Shape'
-    )
     color = forms.CharField(label='Color', widget=forms.TextInput(attrs={'type': 'color', 'value': '#ff0000'}))
-    animated = forms.BooleanField(label='Animated', required=False)
