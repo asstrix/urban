@@ -47,6 +47,12 @@ def login_page(request):
     return render(request, 'login.html', context)
 
 
+def logout(request):
+    request.session.flush()
+    messages.success(request, 'You have been logged out.')
+    return redirect('login')
+
+
 def reg_page(request):
     context = {'title': 'QRBox: Register'}
     if request.method == 'POST':
