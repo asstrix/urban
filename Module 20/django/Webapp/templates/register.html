@@ -7,16 +7,25 @@
 <body>
     <a href="{% url 'main' %}">Main</a>
     <h2>Create account</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label>Email:</label><br>
-        {{ form.email }}<br><br>
-        <label>Password:</label><br>
-        {{ form.password1 }}<br><br>
-        <label>Password confirmation:</label><br>
-        {{ form.password2 }}<br><br>
-        <button type="submit">Sign up</button>
-    </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    {% if result %}
+        <p>{{ result }}</p>
+        <a href="{% url '' %}">Login</a>
+    {% endif %}
+    {% if error %}
+        <p>{{ error }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <label>Name:</label><br>
+            {{ form.name }}<br><br>
+            <label>Email:</label><br>
+            {{ form.email }}<br><br>
+            <label>Password:</label><br>
+            {{ form.password1 }}<br><br>
+            <label>Password confirmation:</label><br>
+            {{ form.password2 }}<br><br>
+            <button type="submit">Sign up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    {% endif %}
 </body>
 </html>

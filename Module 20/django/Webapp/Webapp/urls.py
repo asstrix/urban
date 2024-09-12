@@ -17,12 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from QRBox.views import *
-from QRBox.forms import CustomLoginView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main_page, name='main'),
-    path('login/', CustomLoginView.as_view(), name='login'),
+    path('main/', main_page, name='main'),
+    path('', login_page, name='login'),
     path('register/', reg_page, name='register'),
 ]

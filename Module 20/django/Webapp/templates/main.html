@@ -5,8 +5,12 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <h1>Welcome to QRBox</h1>
-    <a href="{% url 'login' %}">Sign in</a><br><br>
+    {% if user %}
+        <h1>Welcome to QRBox, {{ user|capfirst }}</h1>
+        <a href="{% url 'login' %}">Logout</a><br><br>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a><br><br>
+    {% endif %}
     <form method="post" enctype="multipart/form-data" action="{% url 'main' %}">
         {% csrf_token %}
         <label>{{ form.data.label }}</label> {{ form.data }}<br><br>
@@ -18,13 +22,5 @@
         <button type="reset">Reset</button>
         <button type="submit">Create</button>
     </form>
-
-    <!-- Добавляем проверку на наличие QR-кода -->
-    {% if qr_code_url %}
-        <div class="qr-code">
-            <h2>{{ result }}</h2>
-            <img src="{{ qr_code_url }}" alt="QR Code" style="max-width: 400px;">
-        </div>
-    {% endif %}
 </body>
 </html>

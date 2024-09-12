@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.views import LoginView
 from QRBox.models import Customer
+from django.shortcuts import redirect
+from django.contrib import messages
 
 
 class SignUpForm(forms.ModelForm):
@@ -20,21 +22,16 @@ class SignUpForm(forms.ModelForm):
             raise forms.ValidationError("Passwords don't match")
         return password2
 
-    def save(self, commit=True):
-        user = super(SignUpForm, self).save(commit=False)
-        user.set_password(self.cleaned_data['password1'])
-        if commit:
-            user.save()
-        return user
 
-
-class CustomLoginView(LoginView):
-    template_name = 'login.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'QRBox: Login'
-        return context
+class LoginForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Email'
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Password'
+    }))
 
 
 class QRCodeForm(forms.Form):
