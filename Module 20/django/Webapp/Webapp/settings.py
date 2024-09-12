@@ -11,15 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-# import os
-#
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#
-# # Путь к директории, где будут храниться медиафайлы
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#
-# # URL для доступа к медиафайлам
-# MEDIA_URL = '/media/'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,7 +108,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'QRBox.Customer'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

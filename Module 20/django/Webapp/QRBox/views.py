@@ -1,15 +1,13 @@
-import qrcode, time
+import qrcode, base64
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import SignUpForm, QRCodeForm
 from io import BytesIO
 from PIL import Image
-import base64
 
 
 def reg_page(request):
-    title = 'QRBox: Register'
-    context = {'title': title}
+    context = {'title': 'QRBox: Register'}
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -23,8 +21,7 @@ def reg_page(request):
 
 
 def main_page(request):
-    title = 'QRBox'
-    context = {'title': title}
+    context = {'title': 'QRBox'}
     if request.method == 'POST':
         form = QRCodeForm(request.POST, request.FILES)
         if form.is_valid():
