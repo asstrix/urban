@@ -11,19 +11,6 @@ from django.contrib.auth.hashers import make_password
 
 def login_page(request):
     context = {'title': 'QRBox: Login'}
-    user_id = request.session.get('user_id')
-    if user_id:
-        try:
-            user = Customer.objects.get(id=user_id)
-            context['user'] = user.name
-            main_form = QRCodeForm()
-            context['form'] = main_form
-            return render(request, "main.html", context)
-        except Customer.DoesNotExist:
-            request.session.flush()
-            return redirect('login')
-    else:
-        return redirect('/')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -34,20 +21,19 @@ def login_page(request):
                 if check_password(password, user.password):
                     request.session['user_id'] = user.id
                     context['user'] = user.name
-                    return render(request, "main.html", context)  # Перенаправляем на главную страницу
+                    context['form'] = QRCodeForm()
+                    return render(request, "main.html", context)
                 else:
-                    context['result'] = 'Invalid password.'
+                    messages.error(request, 'Invalid password.')
             except Customer.DoesNotExist:
-                context['result'] = 'User with this email does not exist.'
-        else:
-            context['result'] = 'Login_page: please correct the errors below.'
+                messages.error(request, 'User with this email does not exist.')
     else:
-        form = LoginForm()
-        context['form'] = form
+        context['form'] = LoginForm()
+    context['form'] = LoginForm()
     return render(request, 'login.html', context)
 
 
-def logout(request):
+def logout_view(request):
     request.session.flush()
     messages.success(request, 'You have been logged out.')
     return redirect('login')
@@ -60,16 +46,15 @@ def reg_page(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             name = form.cleaned_data.get('name')
-            password = form.cleaned_data.get('password1')  # Получаем первый пароль
+            password = form.cleaned_data.get('password1')
             hashed_password = make_password(password)
-            try:
-                Customer.objects.create(email=email, name=name, password=hashed_password)
-                context['result'] = 'You have been successfully registered!'
-                return render(request, 'register.html', context)
-            except Exception as e:
-                messages.error(request, 'Error occurred while registering the user.')
+            Customer.objects.create(email=email, name=name, password=hashed_password)
+            messages.success(request, 'You have been successfully registered')
+            context['form'] = LoginForm()
+            return render(request, 'login.html', context)
         else:
-            messages.error(request, 'Reg_page: please correct the errors below.')
+            context['form'] = form
+            return render(request, 'register.html', context)
     else:
         form = SignUpForm()
     context['form'] = form

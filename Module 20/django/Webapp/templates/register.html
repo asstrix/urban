@@ -5,27 +5,12 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <a href="{% url 'main' %}">Main</a>
     <h2>Create account</h2>
-    {% if result %}
-        <p>{{ result }}</p>
-        <a href="{% url '' %}">Login</a>
-    {% endif %}
-    {% if error %}
-        <p>{{ error }}</p>
-        <form method="post">
-            {% csrf_token %}
-            <label>Name:</label><br>
-            {{ form.name }}<br><br>
-            <label>Email:</label><br>
-            {{ form.email }}<br><br>
-            <label>Password:</label><br>
-            {{ form.password1 }}<br><br>
-            <label>Password confirmation:</label><br>
-            {{ form.password2 }}<br><br>
-            <button type="submit">Sign up</button>
-        </form>
-        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign up</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'main' %}">Login</a></p>
 </body>
 </html>

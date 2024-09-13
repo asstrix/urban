@@ -13,12 +13,7 @@
     {% endif %}
     <form method="post" enctype="multipart/form-data" action="{% url 'main' %}">
         {% csrf_token %}
-        <label>{{ form.data.label }}</label> {{ form.data }}<br><br>
-        <label>{{ form.size.label }}</label> {{ form.size }} 1 = 21x21, 2 = 25x25 and etc...<br><br>
-        <label>{{ form.transparent.label }}</label> {{ form.transparent }}<br><br>
-        <label>{{ form.background.label }}</label> {{ form.background }}<br><br>
-        <label>{{ form.logo.label }}</label> {{ form.logo }}<br><br>
-        <label>{{ form.color.label }}</label> {{ form.color }}<br><br>
+        {{ form.as_p }}
         <button type="reset">Reset</button>
         <button type="submit">Create</button>
     </form>
