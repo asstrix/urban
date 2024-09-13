@@ -108,12 +108,10 @@ def qrcodes(request):
             return redirect('login')
     else:
         return redirect('/')
-    codes = QRCodes.objects.filter(user_id=user_id).values('id', 'q_name')
-    print(list(codes))
-    # for i in codes[0]:
-    #     print(i)
-    # context['codes'] = f"data:image/png;base64,{base64.b64encode(codes[0]['qrcode']).decode('utf-8')}"
-    # context''
+    codes = list(QRCodes.objects.filter(user_id=user_id).values('id', 'qrcode', 'q_name'))
+    # context['codes'] = list(codes)
+    for i in codes:
+        print(i['id'])
     return render(request, 'qrcodes.html', context)
 
 
