@@ -1,8 +1,5 @@
 from django import forms
-from django.contrib.auth.views import LoginView
 from QRBox.models import Customer
-from django.shortcuts import redirect
-from django.contrib import messages
 
 
 class SignUpForm(forms.ModelForm):

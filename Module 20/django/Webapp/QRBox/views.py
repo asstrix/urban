@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import check_password
 from io import BytesIO
 from PIL import Image
 from django.contrib import messages
-from QRBox.models import Customer
+from QRBox.models import Customer, QRCodes
 from django.contrib.auth.hashers import make_password
 
 
@@ -82,17 +82,39 @@ def main_page(request):
             transparent = form.cleaned_data['transparent']
             logo = form.cleaned_data.get('logo')
             background = form.cleaned_data.get('custom_background')
-            qr_code, error = generate_qr_code(data, size, color, transparent, logo, background)
+            qr_code, buffer, error = generate_qr_code(data, size, color, transparent, logo, background)
             if error:
                 context['result'] = error
             else:
                 context['result'] = 'Your QR Code'
                 context['qr_code'] = qr_code
+                QRCodes.objects.create(qrcode=buffer.getvalue(), q_name=data, user_id=user_id)
             return render(request, 'qr.html', context)
     else:
         form = QRCodeForm()
     context['form'] = form
     return render(request, 'main.html', context)
+
+
+def qrcodes(request):
+    context = {'title': 'QRBox: My QR codes'}
+    user_id = request.session.get('user_id')
+    if user_id:
+        try:
+            user = Customer.objects.get(id=user_id)
+            context['user'] = user
+        except Customer.DoesNotExist:
+            request.session.flush()
+            return redirect('login')
+    else:
+        return redirect('/')
+    codes = QRCodes.objects.filter(user_id=user_id).values('id', 'q_name')
+    print(list(codes))
+    # for i in codes[0]:
+    #     print(i)
+    # context['codes'] = f"data:image/png;base64,{base64.b64encode(codes[0]['qrcode']).decode('utf-8')}"
+    # context''
+    return render(request, 'qrcodes.html', context)
 
 
 def generate_qr_code(data, size, color, transparent, logo=None, background=None):
@@ -127,6 +149,6 @@ def generate_qr_code(data, size, color, transparent, logo=None, background=None)
         img.save(buffer, format="PNG")
         buffer.seek(0)
         qr_code = base64.b64encode(buffer.getvalue()).decode('utf-8')
-        return f"data:image/png;base64,{qr_code}", None
+        return f"data:image/png;base64,{qr_code}", buffer, None
     except Exception as e:
-        return None, f"Error generating QR code: {e}"
+        return None,None, f"Error generating QR code: {e}"

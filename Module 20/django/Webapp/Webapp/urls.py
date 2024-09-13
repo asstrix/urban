@@ -25,4 +25,5 @@ urlpatterns = [
     path('', login_page, name='login'),
     path('register/', reg_page, name='register'),
     path('logout/', logout_view, name='logout'),
+    path('qrcodes/', qrcodes, name='qrcodes'),
 ]
