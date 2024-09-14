@@ -1,5 +1,5 @@
 import qrcode, base64
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, SignUpForm, QRCodeForm
 from django.contrib.auth.hashers import check_password
 from io import BytesIO
@@ -7,6 +7,7 @@ from PIL import Image
 from django.contrib import messages
 from QRBox.models import Customer, QRCodes
 from django.contrib.auth.hashers import make_password
+from urllib.parse import unquote
 
 
 def login_page(request):
@@ -99,20 +100,24 @@ def main_page(request):
 def qrcodes(request):
     context = {'title': 'QRBox: My QR codes'}
     user_id = request.session.get('user_id')
-    if user_id:
-        try:
-            user = Customer.objects.get(id=user_id)
-            context['user'] = user
-        except Customer.DoesNotExist:
-            request.session.flush()
-            return redirect('login')
-    else:
-        return redirect('/')
-    codes = list(QRCodes.objects.filter(user_id=user_id).values('id', 'qrcode', 'q_name'))
-    # context['codes'] = list(codes)
-    for i in codes:
-        print(i['id'])
+    # if user_id:
+    #     try:
+    #         user = Customer.objects.get(id=user_id)
+    #         context['user'] = user
+    #     except Customer.DoesNotExist:
+    #         request.session.flush()
+    #         return redirect('login')
+    # else:
+    #     return redirect('/')
+    codes = list(QRCodes.objects.filter(user_id=user_id).values('id', 'q_name'))
+    context['codes'] = codes
     return render(request, 'qrcodes.html', context)
+
+
+def delete_qrcode(request, code_id):
+    code = get_object_or_404(QRCodes, id=code_id)
+    code.delete()
+    return redirect('qrcodes')
 
 
 def generate_qr_code(data, size, color, transparent, logo=None, background=None):

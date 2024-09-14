@@ -26,4 +26,5 @@ urlpatterns = [
     path('register/', reg_page, name='register'),
     path('logout/', logout_view, name='logout'),
     path('qrcodes/', qrcodes, name='qrcodes'),
+    path('delete/<int:code_id>/', delete_qrcode, name='delete'),
 ]

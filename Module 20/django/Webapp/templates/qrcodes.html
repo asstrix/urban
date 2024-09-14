@@ -9,13 +9,15 @@
         <a href="{% url 'main' %}">Main</a>
         <a href="{% url 'logout' %}">Logout</a><br><br>
     {% endif %}
+    <h1>My Codes</h1>
+    <a href="{% url 'main' %}">Create new</a><br><br>
     {% if codes %}
-        <h1>My Codes</h1>
-        <ul>
-            {% for code in codes %}
-                <p>{{ code.id }}. {{ code.q_name }}</p><p>{{ code.qrcode }} style="width: 100px; height: 100px; margin: 0;"</p>
-            {% endfor %}
-        </ul>
+        {% for code in codes %}
+            {{ code.id }}. {{ code.q_name }}
+            <a href="{% url 'delete' code.id %}">delete</a><br><br>
+        {% endfor %}
+    {% else %}
+        <p>You don't have generated codes</p>
     {% endif %}
 </body>
 </html>
