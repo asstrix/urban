@@ -27,4 +27,5 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('qrcodes/', qrcodes, name='qrcodes'),
     path('delete/<int:code_id>/', delete_qrcode, name='delete'),
+    path('download/<int:code_id>/', download_qrcode, name='download'),
 ]

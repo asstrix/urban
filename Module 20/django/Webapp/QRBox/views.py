@@ -7,7 +7,7 @@ from PIL import Image
 from django.contrib import messages
 from QRBox.models import Customer, QRCodes
 from django.contrib.auth.hashers import make_password
-from urllib.parse import unquote
+from django.http import HttpResponse
 
 
 def login_page(request):
@@ -100,18 +100,18 @@ def main_page(request):
 def qrcodes(request):
     context = {'title': 'QRBox: My QR codes'}
     user_id = request.session.get('user_id')
-    # if user_id:
-    #     try:
-    #         user = Customer.objects.get(id=user_id)
-    #         context['user'] = user
-    #     except Customer.DoesNotExist:
-    #         request.session.flush()
-    #         return redirect('login')
-    # else:
-    #     return redirect('/')
-    codes = list(QRCodes.objects.filter(user_id=user_id).values('id', 'q_name'))
+    codes = list(enumerate(QRCodes.objects.filter(user_id=user_id).values('id', 'q_name')))
     context['codes'] = codes
     return render(request, 'qrcodes.html', context)
+
+
+def download_qrcode(request, code_id):
+    data = QRCodes.objects.filter(id=code_id).values('qrcode', 'q_name')
+    qr_code = data[0]['qrcode']
+    code_name = data[0]['q_name'].replace('https://', '')
+    response = HttpResponse(qr_code, content_type='image/png')
+    response['Content-Disposition'] = f'attachment; filename="{code_name}.png"'
+    return response
 
 
 def delete_qrcode(request, code_id):

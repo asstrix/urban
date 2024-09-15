@@ -12,9 +12,10 @@
     <h1>My Codes</h1>
     <a href="{% url 'main' %}">Create new</a><br><br>
     {% if codes %}
-        {% for code in codes %}
-            {{ code.id }}. {{ code.q_name }}
-            <a href="{% url 'delete' code.id %}">delete</a><br><br>
+        {% for i, code in codes %}
+            {{ forloop.counter }}: {{ code.q_name }}
+            <a href="{% url 'delete' code.id %}">delete</a>
+            <a href="{% url 'download' code.id %}">download</a><br><br>
         {% endfor %}
     {% else %}
         <p>You don't have generated codes</p>
