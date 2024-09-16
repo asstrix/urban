@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QRBox: My QR Codes</title>
+</head>
+<body>
+    {% if user %}
+        <a href="/main">Main</a>
+        <a href="/logout">Logout</a><br><br>
+    {% endif %}
+    <h2>My QR Codes</h2>
+    <a href="/main">Create new</a><br><br>
+
+    {% if codes %}
+        {% for code in codes %}
+            {{ loop.index }}: {{ code.q_name }}
+            <a href="/qrcodes/{{ code.id }}/delete">delete</a>
+            <a href="/qrcodes/{{ code.id }}/download">download</a><br><br>
+        {% endfor %}
+    {% else %}
+        <p>You don't have generated codes</p>
+    {% endif %}
+</body>
+</html>
