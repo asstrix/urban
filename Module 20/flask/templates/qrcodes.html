@@ -6,19 +6,18 @@
 </head>
 <body>
     {% if user %}
-        <a href="/main">Main</a>
+        <a href="/">Main</a>
         <a href="/logout">Logout</a><br><br>
     {% endif %}
     <h2>My QR Codes</h2>
-    <a href="/main">Create new</a><br><br>
-
+    <a href="/">Create new</a><br><br>
     {% if codes %}
         {% for code in codes %}
-            {{ loop.index }}: {{ code.q_name }}
-            <form action="/qrcodes/{{ code.id }}/delete" style="display:inline;">
+            {{ loop.index }}: {{ code.name }}
+            <form action="/delete/{{ code.id }}" method="post" style="display:inline;">
                 <button type="submit">Delete</button>
             </form>
-            <form action="/qrcodes/{{ code.id }}/download" style="display:inline;">
+            <form action="/download/{{ code.id }}" method="get" style="display:inline;">
                 <button type="submit">Download</button><br><br>
             </form>
         {% endfor %}

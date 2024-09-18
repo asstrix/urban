@@ -14,8 +14,12 @@
     {% if codes %}
         {% for i, code in codes %}
             {{ forloop.counter }}: {{ code.q_name }}
-            <a href="{% url 'delete' code.id %}">delete</a>
-            <a href="{% url 'download' code.id %}">download</a><br><br>
+            <form action="{% url 'delete' code.id %}" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+            <form action="{% url 'download' code.id %}" style="display:inline;">
+                <button type="submit">Download</button><br><br>
+            </form>
         {% endfor %}
     {% else %}
         <p>You don't have generated codes</p>

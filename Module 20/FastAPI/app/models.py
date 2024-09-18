@@ -9,7 +9,7 @@ class Customer(Base):
     email = Column(String, unique=True, index=True)
     name = Column(String, index=True)
     password = Column(String)
-    qrcodes = relationship("QRcodes", back_populates="customer")  # Добавьте это поле
+    qrcodes = relationship("QRcodes", back_populates="customer")
 
 
 class QRcodes(Base):

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QRBox</title>
+</head>
+<body>
+    {% if user %}
+        <h1>Welcome to QRBox, {{ user|capitalize }}</h1>
+        <a href="/qrcodes">My QR codes</a>
+        <a href="/logout">Logout</a><br><br>
+    {% else %}
+        <a href="/login">Login</a><br><br>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" action="/">
+        {{ form.hidden_tag() }}
+        {{ form.data.label }} {{ form.data(size=20) }}<br><br>
+        {{ form.size.label }} {{ form.size() }}<br><br>
+        {{ form.transparent.label }} {{ form.transparent() }}<br><br>
+        {{ form.background.label }} {{ form.background() }}<br><br>
+        {{ form.logo.label }} {{ form.logo() }}<br><br>
+        {{ form.color.label }} {{ form.color() }}<br><br>
+        {{ form.reset() }} {{ form.submit() }}<br><br>
+                {% if qr_code %}
+            <h3>Your QR Code:</h3>
+            <img src="{{ qr_code }}">
+        {% endif %}
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </form>
+</body>
+</html>

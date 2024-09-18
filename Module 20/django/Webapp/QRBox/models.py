@@ -5,17 +5,17 @@ class Customer(models.Model):
 	email = models.EmailField(max_length=32, unique=True)
 	name = models.CharField(max_length=32)
 	password = models.CharField(max_length=256)
-	USERNAME_FIELD = 'email'  # Поле для логина
-	REQUIRED_FIELDS = ['name']  # Обязательные поля при создании суперпользователя
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = ['name']
 
 	@property
 	def is_authenticated(self):
-		return True  # Этот пользователь всегда считается аутентифицированным
+		return True
 
-	# Метод для имитации "анонимного" пользователя
+	# Anonymous user, else django will throw error as the model is custom
 	@property
 	def is_anonymous(self):
-		return False  # Этот пользователь никогда не считается анонимным
+		return False
 
 	def __str__(self):
 		return self.name

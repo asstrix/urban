@@ -18,3 +18,11 @@
         <button type="reset">Reset</button>
         <button type="submit">Create</button>
     </form>
+    {% if qr_code %}
+        <div class="qr-code">
+            <h2>{{ result }}</h2>
+            <img src="{{ qr_code }}">
+        </div>
+    {% endif %}
+</body>
+</html>
