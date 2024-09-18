@@ -35,6 +35,7 @@ alembic.ini
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 pytnon -m uvicorn main:app
+    or
 run main.py
 
 flask
