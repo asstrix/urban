@@ -19,11 +19,13 @@ Password Security: User passwords are stored in hashed form, while other data is
 
 How to run projects:
 django
+pip insatll -r requirement.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 
 fastapi
+pip insatll -r requirement.txt
 alembic init migrations
 migrations/env.py
 	from backend.db import Base
@@ -36,4 +38,5 @@ pytnon -m uvicorn main:app
 run main.py
 
 flask
+pip insatll -r requirement.txt
 run main.py
