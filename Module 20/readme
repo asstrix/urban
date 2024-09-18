@@ -1,8 +1,8 @@
-The application QRBox includes the following features:
+quireThe application QRBox includes the following features:
 
 Login Page: Users can log in with their credentials.
 Registration Page: If users don't have an account, they can register by providing their details.
-Main Page: After logging in, users can access the QR code generation form, which includes:
+Main Page: After logging in, users can access the QR code generation form, which has required fields:
 URL Field: Input the URL to be encoded in the QR code.
 Size Option: Set the size of the generated QR code.
 Additional Options:
