@@ -9,7 +9,8 @@ Additional Options:
 Enable a transparent background for the QR code.
 Upload a custom background image.
 Upload an image to serve as a logo within the QR code.
-Customize the colors of the QR code elements (e.g., modules, background).
+Customize the colors of the QR code elements.
+
 Additionally:
 
 Data Storage: User information and generated QR codes are stored in an SQLite3 database by default, with the option to switch to another database management system if desired.
