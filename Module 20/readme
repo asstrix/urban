@@ -18,6 +18,7 @@ QR Code Storage: Generated QR codes are saved as BLOB data in the database.
 Password Security: User passwords are stored in hashed form, while other data is stored in plain text as-is.
 
 How to run projects:
+python 3.11.*
 django
 pip insatll -r requirement.txt
 python manage.py makemigrations
