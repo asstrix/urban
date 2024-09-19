@@ -20,7 +20,7 @@ class RegisterForm(FlaskForm):
 
 
 class QRCodeForm(FlaskForm):
-    data = StringField('Enter URL', validators=[DataRequired(), Length(max=255)], render_kw={"placeholder": "Enter or URL..."})
+    data = StringField('URL', validators=[DataRequired(), Length(max=255)], render_kw={"placeholder": "Enter URL..."})
     size = IntegerField('QR code Size (1-40)', validators=[DataRequired(), NumberRange(min=1, max=40)])
     transparent = BooleanField('Transparent background')
     background = FileField('Custom background', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
