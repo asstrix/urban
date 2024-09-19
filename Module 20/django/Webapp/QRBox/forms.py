@@ -32,8 +32,8 @@ class LoginForm(forms.Form):
 
 
 class QRCodeForm(forms.Form):
-    data = forms.CharField(label='Enter URL', max_length=255, widget=forms.TextInput(attrs={
-        'placeholder': 'Enter text or URL...',
+    data = forms.CharField(label='URL', max_length=255, widget=forms.TextInput(attrs={
+        'placeholder': 'Enter URL...',
         'class': 'form-control'})
     )
     size = forms.IntegerField(label='QR code Size (1-40)', min_value=1, max_value=40)
