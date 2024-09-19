@@ -13,8 +13,8 @@
         <a href="/login">Login</a><br><br>
     {% endif %}
     <form method="post" enctype="multipart/form-data" action="/create">
-        <label for="data">Enter URL or Text:</label>
-        <input type="text" id="data" name="data" placeholder="Enter text or URL..." class="form-control" maxlength="255" required><br><br>
+        <label for="data">URL:</label>
+        <input type="text" id="data" name="data" placeholder="Enter URL..." class="form-control" maxlength="255" required><br><br>
         <label for="size">QR code Size (1-40):</label>
         <input type="number" id="size" name="size" class="form-control" min="1" max="40" required><br><br>
         <label for="transparent">Transparent background:</label>
