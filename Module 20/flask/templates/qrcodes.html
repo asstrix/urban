@@ -20,25 +20,18 @@
                 <button type="submit">Download</button><br><br>
             </form>
         {% endfor %}
-
-        <!-- Пагинация -->
         <div class="pagination">
             <span class="step-links">
                 {% if codes.has_prev %}
-                    <!-- Первая страница -->
                     <a href="?page=1&per_page={{ per_page }}"><<</a>
-                    <!-- Предыдущая страница -->
                     <a href="?page={{ codes.prev_num }}&per_page={{ per_page }}"><</a>
                 {% endif %}
 
                 <span class="current">
                     Page {{ codes.page }} from {{ codes.pages }}.
                 </span>
-
                 {% if codes.has_next %}
-                    <!-- Следующая страница -->
                     <a href="?page={{ codes.next_num }}&per_page={{ per_page }}">></a>
-                    <!-- Последняя страница -->
                     <a href="?page={{ codes.pages }}&per_page={{ per_page }}">>></a>
                 {% endif %}
             </span>
