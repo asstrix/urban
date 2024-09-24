@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +9,9 @@
     {% endif %}
     <h2>My QR Codes</h2>
     <a href="/main">Create new</a><br><br>
-
-    {% if codes %}
-        {% for code in codes %}
-            {{ loop.index }}: {{ code.q_name }}
+    {% if codes.items %}
+        {% for code in codes.items %}
+            {{ (codes.page - 1) * codes.size + loop.index }}: {{ code.q_name }}
             <form action="/qrcodes/{{ code.id }}/delete" style="display:inline;">
                 <button type="submit">Delete</button>
             </form>
@@ -24,5 +22,20 @@
     {% else %}
         <p>You don't have generated codes</p>
     {% endif %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if codes.page > 1 %}
+                <a href="?page=1&size={{ codes.size }}"><<</a>
+                <a href="?page={{ codes.page - 1 }}&size={{ codes.size }}"><</a>
+            {% endif %}
+            <span class="current">
+                Page {{ codes.page }} of {{ codes.pages }}.
+            </span>
+            {% if codes.page < codes.pages %}
+                <a href="?page={{ codes.page + 1 }}&size={{ codes.size }}">></a>
+                <a href="?page={{ codes.pages }}&size={{ codes.size }}">>></a>
+            {% endif %}
+        </span>
+    </div>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <body>
     {% if user %}
         <h1>Welcome to QRBox, {{ user|title }}</h1>
-        <a href="/qrcodes">My QR codes</a>
+        <a href="/qrcodes?page=1&size=5">My QR codes</a>
         <a href="/logout">Logout</a><br><br>
     {% else %}
         <a href="/login">Login</a><br><br>

@@ -1,17 +1,20 @@
 from fastapi import FastAPI, Request, Depends, HTTPException, Form, status, File, UploadFile
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
+from fastapi_pagination import Page, add_pagination
+from fastapi_pagination.ext.sqlalchemy import paginate
 from starlette.middleware.sessions import SessionMiddleware
 from sqlalchemy.orm import Session
 from backend.db_depends import get_db
-import schemas, crud, bcrypt, qrcode, base64, uvicorn
+import schemas, crud, qrcode, base64, uvicorn
 from urllib.parse import urlencode
 from io import BytesIO
 from PIL import Image
 
+
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="@S7twGRuagfEw#VX")
-
+add_pagination(app)
 templates = Jinja2Templates(directory="templates")
 
 
@@ -51,16 +54,16 @@ async def register_page(request: Request):
 
 @app.post("/login")
 async def login_user(
-    request: Request,
-    db: Session = Depends(get_db),
-    email: str = Form(...),
-    password: str = Form(...),
+	request: Request,
+	db: Session = Depends(get_db),
+	email: str = Form(...),
+	password: str = Form(...),
 ):
 	user = crud.get_customer(db=db, email=email)
 	if not user:
 		query_params = urlencode({"message": "User does not exist."})
 		return RedirectResponse(url=f"/login?{query_params}", status_code=status.HTTP_303_SEE_OTHER)
-	if not bcrypt.checkpw(password.encode('utf-8'), user.password):
+	if password != user.password:
 		query_params = urlencode({"message": "Incorrect password."})
 		return RedirectResponse(url=f"/login?{query_params}", status_code=status.HTTP_303_SEE_OTHER)
 	request.session['user'] = user.name
@@ -76,10 +79,13 @@ async def register_user(
 		password2: str = Form(...),
 		db: Session = Depends(get_db),
 ):
+	user = crud.get_customer(db=db, email=email)
+	if user and email == user.email:
+		query_params = urlencode({"message": "User already exists."})
+		return RedirectResponse(url=f"/register?{query_params}", status_code=303)
 	if password != password2:
 		query_params = urlencode({"message": "Passwords do not match."})
 		return RedirectResponse(url=f"/register?{query_params}", status_code=303)
-	password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 	customer_data = schemas.CreateCustomer(name=name, email=email, password=password)
 	try:
 		crud.create_customer(db=db, customer=customer_data)
@@ -146,12 +152,13 @@ async def create_qr_code(
 		return templates.TemplateResponse("main.html", {"request": request, "error": f"Error generating QR code: {e}"}, status_code=500)
 
 
-@app.get("/qrcodes")
+@app.get("/qrcodes", response_model=Page)
 async def my_qrcodes(request: Request, db: Session = Depends(get_db)):
 	user_id = request.session.get('user_id')
-	qrcodes = crud.get_qrcodes_by_user(db=db, user_id=user_id)
 	user = request.session.get('user')
-	return templates.TemplateResponse("qrcodes.html", {"request": request, "codes": qrcodes, "user": user})
+	qrcodes = crud.get_qrcodes_by_user_query(db=db, user_id=user_id)
+	paginated_qrcodes = paginate(qrcodes)
+	return templates.TemplateResponse("qrcodes.html",{"request": request, "codes": paginated_qrcodes, "user": user})
 
 
 @app.get("/qrcodes/{code_id}/delete")

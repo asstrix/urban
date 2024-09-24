@@ -20,7 +20,7 @@ def create_customer(db: Session, customer: CreateCustomer):
 	new_customer = Customer(
 		email=customer.email,
 		name=customer.name,
-		password=bcrypt.hashpw(customer.password.encode('utf-8'), bcrypt.gensalt())
+		password=customer.password
 	)
 	db.add(new_customer)
 	db.commit()
@@ -36,8 +36,8 @@ def create_qrcode(db: Session, user_id: int, qrcode_data: bytes, q_name: str):
 	return new_qrcode
 
 
-def get_qrcodes_by_user(db: Session, user_id: int):
-	return db.query(QRcodes).filter(QRcodes.user_id == user_id).all()
+def get_qrcodes_by_user_query(db: Session, user_id: int):
+	return db.query(QRcodes).filter(QRcodes.user_id == user_id)
 
 
 def delete_qrcode(db: Session, code_id: int, user_id: int):
