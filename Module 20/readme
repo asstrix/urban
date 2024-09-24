@@ -30,6 +30,7 @@ pip insatll -r requirement.txt
 alembic init migrations
 migrations/env.py
 	from backend.db import Base
+	from models import QRcodes, Customer
 	target_metadata = Base.metadata
 alembic.ini
 	sqlalchemy.url = sqlite:///db.sqlite3
