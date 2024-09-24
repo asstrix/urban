@@ -8,6 +8,7 @@ from django.contrib import messages
 from QRBox.models import Customer, QRCodes
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 
 def login_page(request):
@@ -106,7 +107,17 @@ def main_page(request):
 def qrcodes(request):
 	context = {'title': 'QRBox: My QR codes'}
 	user_id = request.session.get('user_id')
-	codes = list(enumerate(QRCodes.objects.filter(user_id=user_id).values('id', 'q_name')))
+	codes = QRCodes.objects.filter(user_id=user_id).values('id', 'q_name')
+	page_number = request.GET.get('page')
+	per_page = request.GET.get('per_page', 5)
+	try:
+		per_page = int(per_page)
+	except ValueError:
+		per_page = 5
+	paginator = Paginator(codes, per_page)
+	page_obj = paginator.get_page(page_number)
+	context['page_obj'] = page_obj
+	context['per_page'] = per_page
 	context['codes'] = codes
 	return render(request, 'qrcodes.html', context)
 

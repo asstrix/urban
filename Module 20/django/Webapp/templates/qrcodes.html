@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,9 +9,9 @@
     {% endif %}
     <h1>My Codes</h1>
     <a href="{% url 'main' %}">Create new</a><br><br>
-    {% if codes %}
-        {% for i, code in codes %}
-            {{ forloop.counter }}: {{ code.q_name }}
+    {% if page_obj.object_list %}
+        {% for code in page_obj %}
+            {{ page_obj.start_index|add:forloop.counter0 }}: {{ code.q_name }}
             <form action="{% url 'delete' code.id %}" style="display:inline;">
                 <button type="submit">Delete</button>
             </form>
@@ -20,6 +19,21 @@
                 <button type="submit">Download</button><br><br>
             </form>
         {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&per_page={{ per_page }}"><<</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}"><</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}">></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}">>></a>
+                {% endif %}
+            </span>
+        </div>
     {% else %}
         <p>You don't have generated codes</p>
     {% endif %}
