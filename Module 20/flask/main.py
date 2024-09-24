@@ -87,7 +87,7 @@ def index():
                 qr_width, qr_height = img.size
                 logo_size = int(min(qr_width, qr_height) * 0.2)
                 logo_image = logo_image.resize((logo_size, logo_size), Image.LANCZOS)
-                logo_image.putalpha(200)  # Прозрачность логотипа
+                logo_image.putalpha(200)
                 logo_position = ((qr_width - logo_size) // 2, (qr_height - logo_size) // 2)
                 img.paste(logo_image, logo_position, logo_image)
             buffer = BytesIO()
