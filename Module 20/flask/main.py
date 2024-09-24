@@ -6,6 +6,7 @@ from forms import LoginForm, RegisterForm, QRCodeForm
 from io import BytesIO
 from PIL import Image
 import qrcode, base64
+# from flask_sqlalchemy import Pagination
 
 app = Flask(__name__)
 app.secret_key = 'X^h9k9rWW6n2Q1P5'
@@ -52,6 +53,14 @@ def load_user(user_id):
 def index():
     form = QRCodeForm()
     if form.validate_on_submit():
+        if form.reset.data:
+            form.data.data = ''
+            form.size.data = form.size.default
+            form.transparent.data = False
+            form.background.data = ''
+            form.logo.data = ''
+            form.color.data = form.color.default
+            return render_template('main.html', form=form, user=current_user.name)
         try:
             data = form.data.data
             size = form.size.data
@@ -154,8 +163,10 @@ def register():
 @app.route('/qrcodes')
 @login_required
 def qrcodes():
-    user_qrcodes = QRCode.query.filter_by(user_id=current_user.id).all()
-    return render_template('qrcodes.html', user=current_user.name, codes=user_qrcodes)
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 5, type=int)
+    user_qrcodes = QRCode.query.filter_by(user_id=current_user.id).paginate(page=page, per_page=per_page)
+    return render_template('qrcodes.html', user=current_user.name, codes=user_qrcodes, per_page=per_page)
 
 
 @app.route('/download/<int:qr_code_id>')

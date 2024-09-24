@@ -10,9 +10,9 @@
     {% endif %}
     <h2>My QR Codes</h2>
     <a href="/">Create new</a><br><br>
-    {% if codes %}
-        {% for code in codes %}
-            {{ loop.index }}: {{ code.name }}
+    {% if codes.items %}
+        {% for code in codes.items %}
+            {{ (codes.page - 1) * codes.per_page + loop.index }}: {{ code.name }}
             <form action="/delete/{{ code.id }}" method="post" style="display:inline;">
                 <button type="submit">Delete</button>
             </form>
@@ -20,6 +20,29 @@
                 <button type="submit">Download</button><br><br>
             </form>
         {% endfor %}
+
+        <!-- Пагинация -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if codes.has_prev %}
+                    <!-- Первая страница -->
+                    <a href="?page=1&per_page={{ per_page }}"><<</a>
+                    <!-- Предыдущая страница -->
+                    <a href="?page={{ codes.prev_num }}&per_page={{ per_page }}"><</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ codes.page }} from {{ codes.pages }}.
+                </span>
+
+                {% if codes.has_next %}
+                    <!-- Следующая страница -->
+                    <a href="?page={{ codes.next_num }}&per_page={{ per_page }}">></a>
+                    <!-- Последняя страница -->
+                    <a href="?page={{ codes.pages }}&per_page={{ per_page }}">>></a>
+                {% endif %}
+            </span>
+        </div>
     {% else %}
         <p>You don't have generated codes</p>
     {% endif %}
