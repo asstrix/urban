@@ -6,7 +6,7 @@
 </head>
 <body>
     {% if user %}
-        <h1>Welcome to QRBox, {{ user|capitalize }}</h1>
+        <h1>Welcome to QRBox, {{ user|title }}</h1>
         <a href="/qrcodes">My QR codes</a>
         <a href="/logout">Logout</a><br><br>
     {% else %}
