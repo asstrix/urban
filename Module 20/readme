@@ -21,6 +21,9 @@ How to run projects:
 python 3.11.*
 django
 pip insatll -r requirement.txt
+django-admin startproject myproject
+	cd myproject
+python manage.py startapp myapp
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
