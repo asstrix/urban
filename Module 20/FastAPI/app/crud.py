@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from models import Customer, QRcodes
 from schemas import CreateCustomer
 from fastapi import HTTPException
-import bcrypt
 
 
 def get_customer(db: Session, email: str):

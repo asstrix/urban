@@ -6,7 +6,6 @@ from forms import LoginForm, RegisterForm, QRCodeForm
 from io import BytesIO
 from PIL import Image
 import qrcode, base64
-# from flask_sqlalchemy import Pagination
 
 app = Flask(__name__)
 app.secret_key = 'X^h9k9rWW6n2Q1P5'
