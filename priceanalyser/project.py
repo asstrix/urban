@@ -11,25 +11,35 @@ class PriceMachine:
     
     def load_prices(self, file_path=''):
         keyword = 'price'
-        required_columns = [['товар', 'название', 'наименование', 'продукт'],
-                            ['розница', 'цена'],
+        required_columns = [['наименование','товар', 'название', 'продукт'],
+                            ['цена','розница'],
                             ['вес', 'масса', 'фасовка']]
         path = Path(file_path)
         for file in path.rglob('*'):
             if keyword in file.name:
                 try:
                     df = pd.read_csv(file)
+                    rubbish = [i for i in df.columns if i not in [j for k in required_columns for j in k]]
+                    df = df.drop(columns=rubbish).dropna(axis=1, how='all')
+                    rename_map = {}
                     missing_columns = []
                     for i in required_columns:
-                        if not any(col in df.columns for col in i):
+                        found_column = next((col for col in df.columns if col in i), None)
+                        if found_column:
+                            standard_name = i[0]
+                            rename_map[found_column] = standard_name
+                        else:
                             missing_columns.append(i)
                     if not missing_columns:
+                        df = df.rename(columns=rename_map)
+                        df = df[[i[0] for i in required_columns]]
+                        df['файл'] = file.name
+                        df['цена за кг.'] = round(df['цена']/df['вес'], 1)
                         self.data[file.name] = df
                 except Exception as e:
                     print(f"Error processing file {file}: {e}")
         return self.data
 
-        
     def _search_product_price_weight(self, headers):
         '''
             Возвращает номера столбцов
@@ -58,6 +68,7 @@ class PriceMachine:
 
     
 pm = PriceMachine()
+# pm.load_prices()
 print(pm.load_prices())
 
 '''
