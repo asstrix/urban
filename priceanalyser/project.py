@@ -1,6 +1,6 @@
 from pathlib import Path
 import pandas as pd
-import shutil
+import shutil, os
 
 
 class PriceMachine:
@@ -8,10 +8,15 @@ class PriceMachine:
 	def __init__(self):
 		self.data = pd.DataFrame()
 		self.result = pd.DataFrame()
-		self.name_length = 0
+		self.path = Path(__file__).parent
 
 	def __str__(self):
 		if not self.result.empty:
+			if os.name == 'nt':
+				os.system('cls')
+			else:
+				os.system('clear')
+			# Count max len of values to set len of header
 			col_widths = [max(len(str(val)) for val in self.result[col]) for col in self.result.columns]
 			col_widths = [max(len(col), width) for col, width in zip(self.result.columns, col_widths)]
 			header = self.result.columns[0].ljust(col_widths[0]) + "  " + "  ".join(
@@ -25,16 +30,15 @@ class PriceMachine:
 				print(row_str)
 		return ''
 
-	def load_prices(self, file_path='./files'):
+	def load_prices(self):
 		keyword = 'price'
 		required_columns = [
 			['наименование', 'товар', 'название', 'продукт'],
 			['цена', 'розница'],
 			['вес', 'масса', 'фасовка']
 		]
-		path = Path(file_path)
 		first_file = True
-		for file in path.rglob('*'):
+		for file in self.path.rglob('*'):
 			if keyword in file.name:
 				try:
 					df = pd.read_csv(file)
@@ -47,7 +51,7 @@ class PriceMachine:
 							rename_map[column_found] = i[0]
 					df = df.rename(columns=rename_map)
 					if not all([i[0] in df.columns for i in required_columns]):
-						print(f"File {file} skipped: required columns are absent")
+						# print(f"File {file} skipped: required columns are absent")
 						continue
 					correct_order = [i[0] for i in required_columns]
 					if list(df.columns[:3]) != correct_order:
@@ -106,31 +110,32 @@ class PriceMachine:
 		'''
 		html = result.replace('{{table}}', table)
 		try:
-			with open(fname, 'w', encoding='utf-8') as file:
+			with open(self.path/fname, 'w', encoding='utf-8') as file:
 				file.write(html)
-			print(f"The data has been successfully saved to {fname}")
+			print(f"The data has been successfully saved to {self.path/fname}")
 		except Exception as e:
 			print(f"Error saving to HTML: {e}")
 
 
 pm = PriceMachine()
+pm.load_prices()
 terminal_size = shutil.get_terminal_size(fallback=(80, 20))
 width = terminal_size.columns
-print(
-	'Welcome to PriceMachine\n'.rjust(width + 23 // 2) +
-	'Please make sure that you placed files or catalog of files to the same folder of the app\n'.rjust(width + 94 // 2) +
-	"In order to export all files to one html file type 'export'\n".rjust(width + 59 // 2) +
-	"In order to close the app type 'exit'\n".rjust(width + 37 // 2)
-)
+text = """
+Welcome to PriceMachine
+Please make sure that you placed files or catalog of files to the same folder of the app
+In order to export all files to one html file type 'export'
+In order to close the app type 'exit'
+"""
+print("\n".join(line.center(width) for line in text.strip().splitlines()))
+
 while True:
 	text = input('Enter the search word:\n')
 	if text == 'exit':
 		print('Thank you for using our app')
 		break
 	elif text == 'export':
-		pm.load_prices()
 		pm.export_to_html()
 	else:
-		pm.load_prices()
 		pm.find_text(text)
 		print(pm)
