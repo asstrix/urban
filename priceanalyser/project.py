@@ -5,31 +5,48 @@ import pandas as pd
 class PriceMachine:
     
     def __init__(self):
-        self.data = {}
+        self.data = []
         self.result = ''
         self.name_length = 0
-    
+
     def load_prices(self, file_path=''):
         keyword = 'price'
-        required_columns = [['товар', 'название', 'наименование', 'продукт'],
-                            ['розница', 'цена'],
-                            ['вес', 'масса', 'фасовка']]
+        required_columns = [
+            ['наименование', 'товар', 'название', 'продукт'],
+            ['цена', 'розница'],
+            ['вес', 'масса', 'фасовка']
+        ]
         path = Path(file_path)
+        first_file = True
         for file in path.rglob('*'):
             if keyword in file.name:
                 try:
                     df = pd.read_csv(file)
-                    missing_columns = []
+                    valid_columns = [col for sublist in required_columns for col in sublist]
+                    df = df[[col for col in df.columns if col in valid_columns]].dropna(axis=1, how='all')
+                    rename_map = {}
                     for i in required_columns:
-                        if not any(col in df.columns for col in i):
-                            missing_columns.append(i)
-                    if not missing_columns:
-                        self.data[file.name] = df
+                        column_found = next((col for col in df.columns if col in i), None)
+                        if column_found:
+                            rename_map[column_found] = i[0]
+                    df = df.rename(columns=rename_map)
+                    if not all([i[0] in df.columns for i in required_columns]):
+                        print(f"File {file} skipped: required columns are absent")
+                        continue
+                    correct_order = [i[0] for i in required_columns]
+                    if list(df.columns[:3]) != correct_order:
+                        df = df[correct_order + list(df.columns[3:])]
+                    df['файл'] = file.name
+                    df['цена за кг.'] = round(df['цена'] / df['вес'], 1)
+                    if first_file:
+                        self.data = df
+                        first_file = False
+                    else:
+                        self.data = pd.concat([self.data, df], ignore_index=True)
                 except Exception as e:
                     print(f"Error processing file {file}: {e}")
         return self.data
 
-        
     def _search_product_price_weight(self, headers):
         '''
             Возвращает номера столбцов
@@ -58,7 +75,8 @@ class PriceMachine:
 
     
 pm = PriceMachine()
-print(pm.load_prices(file_path='./files'))
+# pm.load_prices()
+print(pm.load_prices())
 
 '''
     Логика работы программы
