@@ -58,7 +58,7 @@ class PriceMachine:
 
     
 pm = PriceMachine()
-print(pm.load_prices())
+print(pm.load_prices(file_path='./files'))
 
 '''
     Логика работы программы
