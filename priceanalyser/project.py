@@ -3,83 +3,122 @@ import pandas as pd
 
 
 class PriceMachine:
-    
-    def __init__(self):
-        self.data = []
-        self.result = ''
-        self.name_length = 0
 
-    def load_prices(self, file_path=''):
-        keyword = 'price'
-        required_columns = [
-            ['наименование', 'товар', 'название', 'продукт'],
-            ['цена', 'розница'],
-            ['вес', 'масса', 'фасовка']
-        ]
-        path = Path(file_path)
-        first_file = True
-        for file in path.rglob('*'):
-            if keyword in file.name:
-                try:
-                    df = pd.read_csv(file)
-                    valid_columns = [col for sublist in required_columns for col in sublist]
-                    df = df[[col for col in df.columns if col in valid_columns]].dropna(axis=1, how='all')
-                    rename_map = {}
-                    for i in required_columns:
-                        column_found = next((col for col in df.columns if col in i), None)
-                        if column_found:
-                            rename_map[column_found] = i[0]
-                    df = df.rename(columns=rename_map)
-                    if not all([i[0] in df.columns for i in required_columns]):
-                        print(f"File {file} skipped: required columns are absent")
-                        continue
-                    correct_order = [i[0] for i in required_columns]
-                    if list(df.columns[:3]) != correct_order:
-                        df = df[correct_order + list(df.columns[3:])]
-                    df['файл'] = file.name
-                    df['цена за кг.'] = round(df['цена'] / df['вес'], 1)
-                    if first_file:
-                        self.data = df
-                        first_file = False
-                    else:
-                        self.data = pd.concat([self.data, df], ignore_index=True)
-                except Exception as e:
-                    print(f"Error processing file {file}: {e}")
-        return self.data
+	def __init__(self):
+		self.data = pd.DataFrame()
+		self.result = pd.DataFrame()
+		self.name_length = 0
 
-    def _search_product_price_weight(self, headers):
-        '''
-            Возвращает номера столбцов
-        '''
+	def __str__(self):
+		col_widths = [max(len(str(val)) for val in self.result[col]) for col in self.result.columns]
+		col_widths = [max(len(col), width) for col, width in zip(self.result.columns, col_widths)]
+		header = self.result.columns[0].ljust(col_widths[0]) + "  " + "  ".join(
+			[self.result.columns[i].center(col_widths[i]) for i in range(1, len(self.result.columns))]
+		)
+		print(header)
+		for _, row in self.result.iterrows():
+			row_str = str(row.iloc[0]).ljust(col_widths[0]) + "  " + "  ".join(
+				[str(row.iloc[i]).center(col_widths[i]) for i in range(1, len(row))]
+			)
+			print(row_str)
+		return ''
 
-    def export_to_html(self, fname='output.html'):
-        result = '''
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Позиции продуктов</title>
-        </head>
-        <body>
-            <table>
-                <tr>
-                    <th>Номер</th>
-                    <th>Название</th>
-                    <th>Цена</th>
-                    <th>Фасовка</th>
-                    <th>Файл</th>
-                    <th>Цена за кг.</th>
-                </tr>
-        '''
-    
-    # def find_text(self, text):
+	def load_prices(self, file_path=''):
+		keyword = 'price'
+		required_columns = [
+			['наименование', 'товар', 'название', 'продукт'],
+			['цена', 'розница'],
+			['вес', 'масса', 'фасовка']
+		]
+		path = Path(file_path)
+		first_file = True
+		for file in path.rglob('*'):
+			if keyword in file.name:
+				try:
+					df = pd.read_csv(file)
+					valid_columns = [col for sublist in required_columns for col in sublist]
+					df = df[[col for col in df.columns if col in valid_columns]].dropna(axis=1, how='all')
+					rename_map = {}
+					for i in required_columns:
+						column_found = next((col for col in df.columns if col in i), None)
+						if column_found:
+							rename_map[column_found] = i[0]
+					df = df.rename(columns=rename_map)
+					if not all([i[0] in df.columns for i in required_columns]):
+						print(f"File {file} skipped: required columns are absent")
+						continue
+					correct_order = [i[0] for i in required_columns]
+					if list(df.columns[:3]) != correct_order:
+						df = df[correct_order + list(df.columns[3:])]
+					df['файл'] = file.name
+					df['цена за кг.'] = round(df['цена'] / df['вес'], 2)
+					if first_file:
+						self.data = df
+						first_file = False
+					else:
+						self.data = pd.concat([self.data, df], ignore_index=True)
+				except Exception as e:
+					print(f"Error processing file {file}: {e}")
+		return self.data
 
-    
+	def find_text(self, key_phrase):
+		if self.data.empty:
+			print("Data not loaded.")
+			return pd.DataFrame()
+		self.result = self.data[self.data[self.data.columns[0]].str.contains(key_phrase, case=False, na=False)]
+		if not self.result.empty:
+			self.result = self.result.sort_values(by=self.result.columns[-1], ascending=True).reset_index(drop=True)
+			self.result = self.result.reset_index()
+			self.result.rename(columns={'index': '№'}, inplace=True)
+			self.result['№'] = self.result['№'] + 1
+			return self.result
+		else:
+			print(f"No matches with '{key_phrase}' were found.")
+			return pd.DataFrame()
+
+	def export_to_html(self, fname='output.html'):
+		self.data = self.data.sort_values(by=self.data.columns[-1], ascending=True).reset_index(drop=True)
+		self.data = self.data.reset_index()
+		self.data.rename(columns={'index': 'номер'}, inplace=True)
+		self.data['номер'] = self.data['номер'] + 1
+		table = self.data.to_html(index=False, border=0)
+		result = '''
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<title>Позиции продуктов</title>
+			<style>
+                table {width: 30%; border-collapse: collapse;}
+                th, td {padding: 8px; line-height: 0.5;}
+                th {text-align: center;}
+                td:nth-child(2) {text-align: left;}
+                td {text-align: center;}
+            </style>
+		</head>
+		<body>
+			<div>
+				{{table}}
+			</div>
+   		 </body>
+		</html>
+		'''
+		html = result.replace('{{table}}', table)
+		try:
+			with open(fname, 'w', encoding='utf-8') as file:
+				file.write(html)
+		except Exception as e:
+			print(f"Error saving to HTML: {e}")
+
+
 pm = PriceMachine()
-# pm.load_prices()
-print(pm.load_prices())
+pm.load_prices()
+# print(pm.load_prices())
+pm.find_text('кальмар')
+print(pm)
+pm.export_to_html()
 
 '''
-    Логика работы программы
+	Логика работы программы
 '''
 # print('the end')
 # print(pm.export_to_html())
