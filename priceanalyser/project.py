@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+import shutil
 
 
 class PriceMachine:
@@ -10,20 +11,21 @@ class PriceMachine:
 		self.name_length = 0
 
 	def __str__(self):
-		col_widths = [max(len(str(val)) for val in self.result[col]) for col in self.result.columns]
-		col_widths = [max(len(col), width) for col, width in zip(self.result.columns, col_widths)]
-		header = self.result.columns[0].ljust(col_widths[0]) + "  " + "  ".join(
-			[self.result.columns[i].center(col_widths[i]) for i in range(1, len(self.result.columns))]
-		)
-		print(header)
-		for _, row in self.result.iterrows():
-			row_str = str(row.iloc[0]).ljust(col_widths[0]) + "  " + "  ".join(
-				[str(row.iloc[i]).center(col_widths[i]) for i in range(1, len(row))]
+		if not self.result.empty:
+			col_widths = [max(len(str(val)) for val in self.result[col]) for col in self.result.columns]
+			col_widths = [max(len(col), width) for col, width in zip(self.result.columns, col_widths)]
+			header = self.result.columns[0].ljust(col_widths[0]) + "  " + "  ".join(
+				[self.result.columns[i].center(col_widths[i]) for i in range(1, len(self.result.columns))]
 			)
-			print(row_str)
+			print(header)
+			for _, row in self.result.iterrows():
+				row_str = str(row.iloc[0]).ljust(col_widths[0]) + "  " + "  ".join(
+					[str(row.iloc[i]).center(col_widths[i]) for i in range(1, len(row))]
+				)
+				print(row_str)
 		return ''
 
-	def load_prices(self, file_path=''):
+	def load_prices(self, file_path='./files'):
 		keyword = 'price'
 		required_columns = [
 			['наименование', 'товар', 'название', 'продукт'],
@@ -106,19 +108,29 @@ class PriceMachine:
 		try:
 			with open(fname, 'w', encoding='utf-8') as file:
 				file.write(html)
+			print(f"The data has been successfully saved to {fname}")
 		except Exception as e:
 			print(f"Error saving to HTML: {e}")
 
 
 pm = PriceMachine()
-pm.load_prices()
-# print(pm.load_prices())
-pm.find_text('кальмар')
-print(pm)
-pm.export_to_html()
-
-'''
-	Логика работы программы
-'''
-# print('the end')
-# print(pm.export_to_html())
+terminal_size = shutil.get_terminal_size(fallback=(80, 20))  # fallback на случай, если не удается получить размер
+width = terminal_size.columns
+print(
+	'Welcome to PriceMachine\n'.rjust(width + 23 // 2) +
+	'Please make sure that you placed files or catalog of files to the same folder of the app\n'.rjust(width + 94 // 2) +
+	"In order to export all files to one html file type 'export'\n".rjust(width + 59 // 2) +
+	"In order to close the app type 'exit'\n".rjust(width + 37 // 2)
+)
+while True:
+	text = input('Enter the search word:\n')
+	if text == 'exit':
+		print('Thank you for using our app')
+		break
+	elif text == 'export':
+		pm.load_prices()
+		pm.export_to_html()
+	else:
+		pm.load_prices()
+		pm.find_text(text)
+		print(pm)
