@@ -114,7 +114,7 @@ class PriceMachine:
 
 
 pm = PriceMachine()
-terminal_size = shutil.get_terminal_size(fallback=(80, 20))  # fallback на случай, если не удается получить размер
+terminal_size = shutil.get_terminal_size(fallback=(80, 20))
 width = terminal_size.columns
 print(
 	'Welcome to PriceMachine\n'.rjust(width + 23 // 2) +
