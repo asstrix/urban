@@ -42,7 +42,7 @@ class PriceMachine:
 			if keyword in file.name:
 				try:
 					df = pd.read_csv(file)
-					valid_columns = [col for sublist in required_columns for col in sublist]
+					valid_columns = [col for col_list in required_columns for col in col_list]
 					df = df[[col for col in df.columns if col in valid_columns]].dropna(axis=1, how='all')
 					rename_map = {}
 					for i in required_columns:
