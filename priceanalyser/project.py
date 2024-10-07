@@ -83,11 +83,11 @@ class PriceMachine:
 			return pd.DataFrame()
 
 	def export_to_html(self, fname='output.html'):
-		self.data = self.data.sort_values(by=self.data.columns[-1], ascending=True).reset_index(drop=True)
-		self.data = self.data.reset_index()
-		self.data.rename(columns={'index': 'номер'}, inplace=True)
-		self.data['номер'] = self.data['номер'] + 1
-		table = self.data.to_html(index=False, border=0)
+		self.result = self.result.sort_values(by=self.data.columns[-1], ascending=True).reset_index(drop=True)
+		self.result = self.result.reset_index(drop=True)
+		self.result.rename(columns={'№': 'номер'}, inplace=True)
+		self.result['номер'] = self.result['номер']
+		table = self.result.to_html(index=False, border=0)
 		result = '''
 		<!DOCTYPE html>
 		<html>
